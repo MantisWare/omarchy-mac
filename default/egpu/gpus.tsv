@@ -1,0 +1,17 @@
+# PCI vendor ID	PCI device ID	vendor	GPU family/models	kernel driver	status
+0x1002	0x67df	AMD	Ellesmere (Radeon RX 470/480/570/580/590)	amdgpu	compatible
+0x1002	0x731f	AMD	Navi 10 (Radeon RX 5600/5700 family)	amdgpu	compatible
+0x1002	0x73bf	AMD	Navi 21 (Radeon RX 6800/6900 family)	amdgpu	compatible
+0x1002	0x73df	AMD	Navi 22 (Radeon RX 6700/6750 family)	amdgpu	compatible
+0x1002	0x73ff	AMD	Navi 23 (Radeon RX 6600 family)	amdgpu	verified
+0x1002	0x744c	AMD	Navi 31 (Radeon RX 7900 family)	amdgpu	compatible
+0x8086	0x56a0	Intel	DG2 (Arc A770)	xe/i915	compatible
+0x8086	0x56a1	Intel	DG2 (Arc A750)	xe/i915	compatible
+0x8086	0x56a2	Intel	DG2 (Arc A580)	xe/i915	compatible
+0x8086	0x56a5	Intel	DG2 (Arc A380)	xe/i915	compatible
+0x8086	0x56a6	Intel	DG2 (Arc A310)	xe/i915	compatible
+0x10de	0x1b80	NVIDIA	Pascal (GeForce GTX 1080)	nouveau/nvidia	compatible
+0x10de	0x1e07	NVIDIA	Turing (GeForce RTX 2080 Ti)	nouveau/nvidia	compatible
+0x10de	0x2206	NVIDIA	Ampere (GeForce RTX 3080)	nouveau/nvidia	compatible
+0x10de	0x2484	NVIDIA	Ampere (GeForce RTX 3070)	nouveau/nvidia	compatible
+0x10de	0x2684	NVIDIA	Ada (GeForce RTX 4090)	nouveau/nvidia	compatible

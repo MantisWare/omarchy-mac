@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# omarchy:summary=Authorize a catalogued Thunderbolt eGPU enclosure
+# omarchy:group=hw
+# omarchy:args=SYSFS_DEVICE
+# omarchy:hidden=true
+
+set -euo pipefail
+
+device_path=${1:-}
+catalog=${OMARCHY_EGPU_ENCLOSURE_CATALOG:-/usr/share/omarchy/default/egpu/enclosures.tsv}
+thunderbolt_bus=${OMARCHY_THUNDERBOLT_SYSFS:-/sys/bus/thunderbolt/devices}
+
+[[ -n $device_path ]] || exit 2
+[[ -d $device_path && -f $device_path/vendor && -f $device_path/device && -w $device_path/authorized ]] || exit 0
+[[ -r $catalog ]] || exit 0
+
+device_name=${device_path##*/}
+domain=${device_name%%-*}
+security_file="$thunderbolt_bus/domain$domain/security"
+
+# A direct authorization is appropriate for the firmware "user" security
+# level. Never bypass a cryptographic secure-mode challenge; boltd owns that
+# enrollment and authorization path.
+[[ -r $security_file ]] || exit 0
+security=$(<"$security_file")
+[[ $security == "user" || $security == "none" ]] || exit 0
+
+vendor=$(<"$device_path/vendor")
+device=$(<"$device_path/device")
+[[ $vendor =~ ^0[xX][0-9a-fA-F]+$ && $device =~ ^0[xX][0-9a-fA-F]+$ ]] || exit 0
+
+vendor_number=$((vendor))
+device_number=$((device))
+matched=0
+
+while IFS=$'\t' read -r catalog_vendor catalog_device _; do
+  [[ -n $catalog_vendor && ${catalog_vendor:0:1} != "#" ]] || continue
+  [[ $catalog_vendor =~ ^0[xX][0-9a-fA-F]+$ && $catalog_device =~ ^0[xX][0-9a-fA-F]+$ ]] || continue
+
+  if (( vendor_number == catalog_vendor && device_number == catalog_device )); then
+    matched=1
+    break
+  fi
+done <"$catalog"
+
+(( matched )) || exit 0
+[[ $(<"$device_path/authorized") == "0" ]] || exit 0
+printf '1\n' >"$device_path/authorized"

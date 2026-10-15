@@ -8,8 +8,8 @@ fix_t2="$ROOT/install/hardware/apple/fix-t2.sh"
 other_packages="$ROOT/install/omarchy-other.packages"
 migration="$ROOT/migrations/1785944594.sh"
 
-grep -Fq 'KERNEL_CMDLINE[default]+=" intel_iommu=on iommu=pt pm_async=off mem_sleep_default=deep"' "$fix_t2" ||
-  fail "T2 setup installs the suspend kernel parameters"
+grep -Fq 'KERNEL_CMDLINE[default]+=" intel_iommu=on iommu=pt pm_async=off mem_sleep_default=deep pci=realloc,hpmmioprefsize=512M"' "$fix_t2" ||
+  fail "T2 setup installs the suspend and PCI hot-plug kernel parameters"
 ! grep -q 'pcie_ports=compat' "$fix_t2" ||
   fail "T2 setup drops the obsolete PCIe compatibility parameter"
 (( $(grep -Ec '^\[Fan[12]\]$' "$fix_t2") == 2 )) ||

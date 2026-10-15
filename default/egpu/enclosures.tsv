@@ -1,0 +1,3 @@
+# Thunderbolt vendor ID	Thunderbolt device ID	vendor	model	status	notes
+0x0041	0x0305	inXtron	AKiTiO Thunder3 PCIe Box	compatible	Documented by the Linux Thunderbolt subsystem as a PCIe enclosure
+0x0041	0x0308	inXtron	AKiTiO Node	verified	Verified at 40 Gb/s on MacBookPro16,1 with Radeon RX 6600 XT

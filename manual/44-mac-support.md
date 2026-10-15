@@ -69,3 +69,13 @@ The Apple T2 Security Chip was introduced in 2017. The T2 chip was discontinued 
 - MacBook Pro 15-inch (2020) – Model: A1990
 
 On these models, the installer automatically sets up the patched `linux-t2` kernel, the T2 audio configuration, Apple's Broadcom Wi-Fi/Bluetooth firmware, and fan control via `t2fanrd`. The Touch Bar runs on the kernel's built-in Boot Camp-style support.
+
+### External GPUs
+
+miaOS supports hot-plugged PCIe graphics cards in allowlisted Thunderbolt 3 and USB4 eGPU enclosures. Known enclosure identities are authorized automatically when the controller uses Thunderbolt's `user` security level; controllers configured for cryptographic `secure` mode continue to use `boltctl enroll` so the OS does not bypass their device challenge.
+
+T2 Macs also reserve a 512 MiB prefetchable PCI hot-plug window at boot. This is large enough for the 256 MiB BAR used by current AMD cards, avoiding the common case where an enclosure and GPU appear in `lspci` but the graphics driver cannot allocate the card. Changing this boot reservation requires one reboot after installing or updating miaOS.
+
+Support is based on the enclosure's Thunderbolt identity and the GPU's normal Linux PCI display-class driver, not on one enclosure UUID or one graphics-card serial number. miaOS maintains separate enclosure and GPU compatibility catalogs. A `verified` entry means the exact hardware has been exercised on miaOS; `compatible` means the enclosure follows the Linux Thunderbolt PCIe path or the GPU is covered by the named in-kernel driver, but that exact pairing has not yet been hardware-tested by the project.
+
+For the best chance of a stable 40 Gb/s link, use a certified Thunderbolt 3 or 4 cable rather than a USB-C charging cable. Check the negotiated link and authorization with `boltctl list`, then use `lspci -nnk` to confirm that the GPU has a kernel driver bound.

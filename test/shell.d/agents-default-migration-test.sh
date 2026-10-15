@@ -64,8 +64,8 @@ write_config "$without_widget"
 run_migration
 
 [[ $(ids right) == "$(shipped_ids right)" ]] ||
-  fail "migration inserts the agents widget after the tray" "$(ids right)"
-pass "migration inserts the agents widget after the tray"
+  fail "migration restores the agents widget at its shipped position" "$(ids right)"
+pass "migration restores the agents widget at its shipped position"
 
 (($(wc -l <"$SHELL_RESTARTS") == 0)) || fail "migration leaves the shell restart to omarchy update"
 pass "migration leaves the shell restart to omarchy update"
@@ -98,7 +98,7 @@ pass "migration reads string-form entries"
 write_config "$without_widget | del(.bar.layout.right[] | select(.id == \"omarchy.tray\"))"
 run_migration
 
-[[ $(ids right) == '["omarchy.agents",'* ]] || fail "migration places the widget without a tray" "$(ids right)"
+[[ $(ids right) == *'"omarchy.egpu","omarchy.agents"'* ]] || fail "migration keeps agents after the GPU widget without a tray" "$(ids right)"
 pass "migration places the widget without a tray"
 
 # ------------------------------------------------------------------ everything else

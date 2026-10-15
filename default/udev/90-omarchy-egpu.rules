@@ -1,0 +1,3 @@
+# Known PCIe eGPU enclosures are authorized by their Thunderbolt vendor/device
+# identity. The helper owns the allowlist and ignores all other peripherals.
+ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", RUN+="/usr/bin/omarchy-hw-egpu-authorize /sys%p"

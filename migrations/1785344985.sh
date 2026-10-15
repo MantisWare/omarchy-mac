@@ -41,7 +41,13 @@ if [[ -s $config_file ]]; then
     if has_widget("omarchy.agents") then
       .
     else
-      .bar.layout.right |= insert_after("omarchy.tray"; { id: "omarchy.agents" })
+      .bar.layout.right |= (
+        if any(.[]?; entry_id == "omarchy.egpu") then
+          insert_after("omarchy.egpu"; { id: "omarchy.agents" })
+        else
+          insert_after("omarchy.tray"; { id: "omarchy.agents" })
+        end
+      )
     end
   ' "$config_file" >"$tmp" && mv "$tmp" "$config_file" || rm -f "$tmp"
 fi

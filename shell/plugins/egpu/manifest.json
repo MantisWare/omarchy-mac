@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "omarchy.egpu",
+  "name": "GPUs and local models",
+  "version": "2.0.0",
+  "author": "miaOS",
+  "description": "GPU inventory and verified local-model placement",
+  "kinds": ["bar-widget"],
+  "entryPoints": {"barWidget": "Widget.qml"},
+  "barWidget": {
+    "displayName": "GPUs and local models",
+    "description": "Inspect GPUs and reload supported local models onto a preferred device",
+    "category": "Status",
+    "allowMultiple": false
+  }
+}
